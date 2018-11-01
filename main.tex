@@ -1,0 +1,41 @@
+\documentclass[12pt,letterpaper,oneside]{book}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{subfig}
+\usepackage{ThesisStyle/afitThesis}
+\usepackage{Packages/sf298}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\graphicspath{{..Thesis/Preamble/Figures/}}
+
+\input{Thesis/Preamble/titlePage}
+\input{Thesis/Preamble/myFigures}
+\title{Bramblett Thesis}
+
+
+\begin{document}
+\frontmatter
+	\flyleaf
+    \disclaimerpage
+    \titlepageAFIT
+    \committeepage
+    \input{Thesis/Front/abstract}
+    \input{Thesis/Front/acknowledgements}
+    \tableofcontents
+    \listoffigures
+    \listoftables
+\mainmatter
+	\chapter{Introduction}
+	\input{Thesis/Introduction/WrittenIntro2}
+    \chapter{Literature Review}
+    \input{Thesis/LiteratureReview/LitReview}
+    \chapter{Methodology}
+    \input{Thesis/Method/Method}
+\backmatter
+	\singlespace
+	\bibliographystyle{plain}
+	\bibliography{NasicBib} 
+	\clearpage
+%\input{OnlySF298/Back/SF298}
+\end{document}
