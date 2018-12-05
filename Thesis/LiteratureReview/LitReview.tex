@@ -69,9 +69,11 @@ The endurance equation's lift and drag elements can be replaced by an angle of a
 \end{equation}
 \par 
 The simplification of these equations involves introducing an unknown amount of error into a continuous problem. There are analytical solutions to reducing this error shown in \cite{OptimizeBreguet} and \cite{LoiterTimeFromRange}. These can be incorporated and tested against the existing high-fidelity solutions.\par
-
-\section{Thrust Relations}
-
+In addition to these simplifications, \cite{Raymer} uses the non-linear Bre\'guet range equation to approximate the maximum loiter time of an aircraft. Employing approximate conditions of cruise $(L/D)$ versus loiter $(L/D)$, \cite{Raymer} finds that 
+\begin{equation}
+    \dfrac{R_{cruise}}{V_{cruise}} = \dfrac{TSFC_{loiter}}{TSFC_{cruise}}\dfrac{(L/D)_{cruise}}{E_{loiter}}
+\end{equation}
+where $E_{loiter}$ is the time of loiter. Finding the approximate relationship between the $(L/D)$s of both loiter and cruise made this method approximately $5\%$ optimistic when compared to tested jets. 
 \section{Multiobjective Optimization}
 Pareto introduced the concept of dominated solutions in the field of economics in 1906 to describe a solution that best serves all parties in a multiplayer game \cite{paretomanual}. Now, science and engineering have coordinated this concept into design and performance optimization \cite{surveyMarler}. A Pareto Frontier in an aircraft's performance space can be easily visualized when there are few objectives. In this case, two objectives gives a reasonable expectation for a straightforward visualization. \cite{MultiobjectiveVisualization} uses an initial mapping from a design space to a performance space in multiple dimensions and proves that the visualization using performance is a better method for an $n$-dimensional design space. The performance space of the Pareto Frontier proposed in this paper is only two dimensional and does not require the complicated mapping of a design space to a performance space from multiple dimensions.\par
 Multi-objective optimization with two objectives and two performance variables can be seen in Eqs. \ref{eq:exfunction1} and \ref{eq:exfunction2}.
@@ -80,19 +82,18 @@ Multi-objective optimization with two objectives and two performance variables c
     f_2(x) &= 4+2*\sqrt{1+(x-1)^2}
     \label{eq:exfunction2}
 \end{align}
-$f_1(x)$ is increasing as $f_2(x)$ is decreasing between zero and one so there is a tradeoff region between the two functions in optimization. Figure \ref{visualex} shows the tradeoff region for the two functions.
+$f_1(x)$ is increasing as $f_2(x)$ is decreasing between zero and one so there is a tradeoff region between the two functions in optimization. Figure \ref{visualex}(a) shows the tradeoff region for the two functions.
 
 \begin{figure}%
     \centering
-    \label{visualex}
     \subfloat[Plot of two objective functions.]{{\includegraphics[width=7cm]{Thesis/LiteratureReview/VisualExTwoObj.png} }}%
     \qquad
     \subfloat[Tradeoff region due to weighted optimization.]{{\includegraphics[width=7cm]{Thesis/LiteratureReview/VisualExTradeoff.png} }}%
     \caption{Example of a weighted Pareto Frontier.}%
-    %
+    \label{visualex}
 \end{figure}
 
-By using multi-objective optimization, the Pareto Frontier shows the optimums given that one function is more important than another over this tradeoff region. Figure \ref{fig:tradeoffex} shows the tradeoff between the two objectives.
+By using multi-objective optimization, the Pareto Frontier shows the optimums given that one function is more important than another over this tradeoff region. Figure \ref{visualex}(b) shows the resulting tradeoff between the two objectives.
 
 
 \par
@@ -117,5 +118,11 @@ The second method is the $\epsilon$-constraint method where one of the objective
     \end{aligned}
     \label{eq:constraintEq}
 \end{equation}
+\section{Aircraft Assignment Problem}
+The aircraft assignment problem is an application of the assignment problem to target locations from a starting point. The assignment problem can consist of one aircraft and multiple locations, a one-to-one matching of aircraft to target locations, or multiple aircraft to a greater number of locations. An assignment problem is a combina (REFERENCE BOOK).\par
+A mixed-integer linear program (MILP) is generally the designation of assignment problems, given that the constraints and objective function are linear and that an assignment is either fulfilled or not. In their paper on the UAV routing assingment problem, \cite{Shetty} uses a mixed integer linear program, where the main constraints are service level and weaponry constraints. The formulation serves as a traveling salesman problem (TSP), where the objective is to minimize cost, but all locations must be visited in the model. There is no upper-level constraint for ability to travel or service for any amount of time.\par
+In contrast, \cite{Alighanbari},\cite{Taylor}, and \cite{Schumacher} use constrained optimization based on range, timing, or fuel ratios. The advantage of this is that it can mirror real-world scenarios such as UAV waypoints in \cite{Alighanbari} or flight mapping for commercial airliners in \cite{Taylor}. Though \cite{Taylor} used the TSP formulation in their model, the idea of using fuel as a constraint accounts for all possible maneuvers in an aircraft.\par
+In \cite{OptimizeBreguet}, the authors discuss the continuous coverage of a target area using a time on station designation and assuming a constant idle time. This allowed for a maximization of time on station for a certain number of aircraft while meeting the constraints for turn-around time and outbound time for any particular aircraft. The combination of this idea while allowing for multiple target locations in an imperfect matching scheme will allow for a decision maker to maximize the priority of targets with limited resources.
+
 
 \section{Conclusion}

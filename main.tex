@@ -2,8 +2,10 @@
 \usepackage{algpseudocode}
 \usepackage{algorithm}
 \usepackage{subfig}
+\usepackage[hidelinks]{hyperref}
 \usepackage{ThesisStyle/afitThesis}
 \usepackage{Packages/sf298}
+\usepackage[toc,page]{appendix}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
@@ -32,6 +34,8 @@
     \input{Thesis/LiteratureReview/LitReview}
     \chapter{Methodology}
     \input{Thesis/Method/Method}
+    \appendix
+    \input{Thesis/Appendices/Appendix.tex}
 \backmatter
 	\singlespace
 	\bibliographystyle{plain}
