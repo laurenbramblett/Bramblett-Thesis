@@ -1,0 +1,32 @@
+\section{Introduction}
+
+\section{Initial Formulation}
+Let $x_{ij}$ be a binary variable where $x_{ij} = 0$ if plane $i$ travels to location $j$. Additionally let $d$ be the number of miles from a starting point to any interest location and $E_{ij}$ be a matrix of maximum loiter time, given that aircraft $i$ has traveled to location $j$. The number $0$ in the $E$ matrix represents an inability for the aircraft to reach that point. The sets $I = \{1,2,\dots,n\}$ and $J = \{1,2,\dots,m\}$ where $n$ is the number of aircraft and $m$ is the number of locations. The formulation is as follows for maximizing endurance with $n$ aircraft and $m$ locations.
+\begin{equation}
+    \begin{aligned}
+        \max &\sum_{i\in I}\sum_{j\in J} E_{ij}x_{ij}\hspace{1cm}\\
+        \text{s.t } &\sum_{i\in I} \leq 1\hspace{1cm} \forall j\in J\\
+        &\sum_{j\in J} \leq 1\hspace{1cm} \forall i \in I
+    \end{aligned}
+\end{equation}
+\begin{itemize}
+    \item When m = n
+    \item When m > n
+    \item When different aircraft
+    \item When using a reward curve
+\end{itemize}
+
+\section{Decision Dependent Formulation}
+\begin{align}
+\max \hspace{0.5cm} &\sum \text{Endurance Utility (ie logistic curve of: $\sum(f_{ij}-R_{ij}$))}\\
+&\sum_{j:(s,j)\in A} x_{sj}^{\tau} = \begin{cases}
+1 & \tau = 1\\
+0 & \forall\tau\in T-\{1\} \end{cases} \\
+&\sum_{j:(i,j)\in A} x_{ij}^{\tau+1}-\sum_{j:(j,i)\in A}^{\tau} = 0 \hspace{0.5cm} \forall i\in N-\{s\},\tau \in T\\
+&\sum_{i:(i,s)\in A}\sum_{\tau\in T} x_{is}^\tau = 1\\
+&F^1\leq F\\
+&F^\tau \leq F^{\tau-1}-\sum_{\forall(i,j)\in A} f_{ij} x_{ij}^{\tau-1}\\
+&R_{ij}\leq f_{ij}\\
+&F^\tau \leq F \hspace{0.5cm} \forall \tau \in T-\{1\}\\
+&F^\tau -\sum_{\forall (i,j)\in A} f_{ij}x_{ij}\geq 0 \hspace{0.5cm} \forall \tau \in T
+\end{align}

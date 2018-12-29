@@ -6,6 +6,8 @@
 \usepackage{ThesisStyle/afitThesis}
 \usepackage{Packages/sf298}
 \usepackage[toc,page]{appendix}
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
@@ -34,6 +36,10 @@
     \input{Thesis/LiteratureReview/LitReview}
     \chapter{Methodology}
     \input{Thesis/Method/Method}
+    \chapter{Assignment Methodology}
+    \input{Thesis/Method_II/Method_II.tex}
+    \chapter{Analysis}
+    \input{Thesis/Analysis/Analysis.tex}
     \appendix
     \input{Thesis/Appendices/Appendix.tex}
 \backmatter
