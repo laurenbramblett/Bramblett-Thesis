@@ -1,32 +1,162 @@
 \section{Introduction}
+\section{Assignment Problem Literature Review}
+The aircraft assignment problem is an application of the assignment problem to target locations from a starting point. A modified assignment problem can consist of one aircraft and multiple locations, a one-to-one matching of aircraft to target locations, or multiple aircraft to a greater number of locations. An assignment problem is a special case of the transportation problem where supply is equal to one and demand is equal to one for all locations. The mathematical model for an assignment problem is as follows:
+\begin{align*}
+    \min\hspace{0.5cm} &\sum_{i=1}^m\sum_{j = 1}^mc_{ij}x_{ij}\\
+    \text{s.t.} \hspace{0.5cm} &\sum_{j=1}^mx_{ij} = 1, \hspace{0.5cm} \forall i \in \{1,...,m\}\\
+    &-\sum_{i=1}x_{ij} = -1, \hspace{0.5cm} \forall j \in \{1,...,m\}\\
+    &x_{ij} \in \{0,1\}, \hspace{0.5cm} \forall i,j\in \{1,...,m\}
+\end{align*}
+where $c_{ij}$ is the cost of assigning $i$ to $j$ and $m$ is the number of assignments \cite{bazaraa}. 
+\par
+A mixed-integer linear program (MILP) is generally the designation of assignment problems, given that the constraints and objective function are linear and that an assignment is either fulfilled or not. In their paper on the UAV routing assingment problem, Shetty et al. \cite{Shetty} use a mixed integer linear program, where the main constraints are service level and weaponry constraints. The formulation serves as a traveling salesman problem (TSP), where the objective is to minimize cost, but all locations must be visited in the model. There is no upper-level constraint for ability to travel or service for any amount of time.\par
+In contrast, Alighanbari et al. \cite{Alighanbari}, Schumacher et al. \cite{Schumacher}, and Taylor et al. \cite{Taylor}, use constrained optimization based on range, timing, or fuel ratios. The advantage of this is that it can mirror real-world scenarios such as UAV waypoints \cite{Alighanbari} or flight mapping for commercial airliners \cite{Taylor}. Though Taylor et al. \cite{Taylor} used the TSP formulation in their model, the idea of using fuel as a constraint accounts for all possible maneuvers in an aircraft.\par
+Vitte \cite{OptimizeBreguet} discusses the continuous coverage of a target area using a time on station designation and assuming a constant idle time. This allowed for a maximization of time on station for a certain number of aircraft while meeting the constraints for turn-around time and outbound time for any particular aircraft. Integrating this idea while allowing for multiple target locations in an imperfect matching scheme will allow for a decision maker to maximize the priority of targets with limited resources.\par
+Kannon et. al. \cite{Kannon} examines the incorporation of fuel over a series of time steps in an aircraft routing formulation. At each time step, fuel can change depending on a previous aerial refueling. Using a MILP, the formulation is able to solve for the optimal optimal route through a series of intermediary nodes and the refueling intermediary node between a source and sink. The concept of a time step can follow the use of fuel along a route and involve how fuel efficiency changes over fuel burn.
 
 \section{Initial Formulation}
-Let $x_{ij}$ be a binary variable where $x_{ij} = 0$ if plane $i$ travels to location $j$. Additionally let $d$ be the number of miles from a starting point to any interest location and $E_{ij}$ be a matrix of maximum loiter time, given that aircraft $i$ has traveled to location $j$. The number $0$ in the $E$ matrix represents an inability for the aircraft to reach that point. The sets $I = \{1,2,\dots,n\}$ and $J = \{1,2,\dots,m\}$ where $n$ is the number of aircraft and $m$ is the number of locations. The formulation is as follows for maximizing endurance with $n$ aircraft and $m$ locations.
+Let $x_{ij}$ be a binary variable where $x_{ij} = 1$ if plane $i$ travels to location $j$. Additionally let $d$ be the number of miles from a starting point to any interest location and $E_{ij}$ be a matrix of maximum loiter times, given that aircraft $i$ has traveled to location $j$. A negative number in the $E$ matrix represents an inability for the aircraft to reach that point and results in a penalty to the overall objective function. The sets $I = \{1,2,\dots,n\}$ and $J = \{1,2,\dots,m\}$ where $n$ is the number of aircraft and $m$ is the number of locations. The formulation is as follows for maximizing endurance with $n$ aircraft and $m$ locations.\par
 \begin{equation}
     \begin{aligned}
         \max &\sum_{i\in I}\sum_{j\in J} E_{ij}x_{ij}\hspace{1cm}\\
-        \text{s.t } &\sum_{i\in I} \leq 1\hspace{1cm} \forall j\in J\\
-        &\sum_{j\in J} \leq 1\hspace{1cm} \forall i \in I
+        \text{s.t } &\sum_{i\in I} x_{ij}\leq 1\hspace{1cm} \forall j\in J\\
+        &\sum_{j\in J}x_{ij} \leq 1\hspace{1cm} \forall i \in I\\
+        &x_{ij}\in \{0,1\} \hspace{1cm} \forall i\in I, j\in J
     \end{aligned}
 \end{equation}
-\begin{itemize}
-    \item When m = n
-    \item When m > n
-    \item When different aircraft
-    \item When using a reward curve
-\end{itemize}
+The constraints represent a typical transshipment problem where an aircraft can only travel to one location and a location can be visited no more than once. Using the Haversine formula and the methodology used in Section \ref{section:havMethod}, the endurance matrix is determined by the aircraft's specific parameters. \par
+The results of the initial formulation model are relatively trivial. The model will seek to maximize endurance of equally weighted interest locations. Results will reflect that the locations that maximize total endurance will be the closest locations. The initial formulation is more useful for advanced assignment where interest locations are assigned a priority or where a longer loiter over a target distributed in a certain way over time.\par
+
+\section{Priority Assignment Formulation}
+The priority assignment formulation is similar to the initial formulation and allows for locations to be prioritized by importance. The decision for an interests point priority is defined by the vector $\mathbf{v}$. Additionally, let $x_{ij}$ be a binary variable where $x_{ij} = 1$ if plane $i$ travels to location $j$. Similarly, $d$ is the number of miles from a starting point to any interest location and $E_{ij}$ is a matrix of maximum loiter times, given that aircraft $i$ has traveled to location $j$. A negative value in the $E$ matrix represents an inability for the aircraft to reach that point and results in a penalty to the overall objective function. The sets $I = \{1,2,\dots,n\}$ and $J = \{1,2,\dots,m\}$ where $n$ is the number of aircraft and $m$ is the number of locations. The formulation is as follows for maximizing endurance with $n$ aircraft and $m$ locations.\par
+\begin{equation}
+    \begin{aligned}
+        \max &\sum_{i\in I}\sum_{j\in J} E_{ij}x_{ij}v_{i}\hspace{1cm}\\
+        \text{s.t } &\sum_{i\in I}x_{ij} \leq 1\hspace{1cm} \forall j\in J\\
+        &\sum_{j\in J}x_{ij} \leq 1\hspace{1cm} \forall i \in I\\
+        &x_{ij}\in \{0,1\} \hspace{1cm} \forall i\in I, j\in J
+    \end{aligned}
+\end{equation}
+Though $v_i$ in this case is represented as a discrete matrix of priorities, there can also be a distribution with the endurance associated with an interest location. This broadens the ability of this formulation to utilize the developed methodology for incorporating the dynamic flight characteristics of aircraft into an assignment decision rather than a static constraint used in other literature \cite{Alighanbari,Schumacher,Taylor}.
+\section{Assignment Problem Tests}
+The assignment problem was tested using the aircraft parameters from AC4-000. This aircraft had the longest range and, with the given list of interest points, found non-trivial solutions. The combat fuel and climb fuel were set to zero as to assume that the aircraft was only interested in loiter at its respective location. The interest points were a random sequence of 100 cities in the US. All tests were run on the same 100 cities. \par
+The sample problem assigned an arbitrary amount of twenty aircraft to visit twenty nodes to meet the objective of maximizing total endurance. Figure \ref{fig:trivialAP} shows the results of the optimization problem run using the SCIP solver.\par
+\begin{figure}[H]
+    \centering
+    \includegraphics{Thesis/Method_II/trivialAP.eps}
+    \caption{Initial Assignment Problem Example}
+    \label{fig:trivialAP}
+\end{figure}
+As hypothesized, the results show a relatively trivial solution since all aircraft are the same and endurance at all locations is weighted equally. The twenty aircraft were assigned to the twenty nearest locations.\par
+The priority assignment problem assigned a random priority to each location between zero and twenty. This was in an attempt to test whether a non-trivial solution can be found when certain locations are more desirable to endure over than others. The same aircraft and locations were used in this problem as in the initial assignment problem example. Figure \ref{fig:priorityAP} shows the results of the optimization problem run using the SCIP solver.
+\begin{figure}[H]
+    \centering
+    \includegraphics{Thesis/Method_II/priorityAP.eps}
+    \caption{Priority Assignment Problem Example}
+    \label{fig:priorityAP}
+\end{figure}
+The optimization problem solution verified that certain locations were a higher priority than others despite the decreased available loiter time. The aircraft traveled to locations past the previous solutions interest locations and chose to loiter at these interest points due to their higher interest.\par
+Using the same optimization formulation as the priority assignment formulation, the last test was using four different aircraft, the F-15C, AC2-000, AC3-000, and AC4-000. Since these three have different endurance capabilities at their given parameters in Table \ref{tab: aircraft parameters}, the problem seeks to maximize priority while balancing the dynamic characteristics of the different aircraft. Twenty aircraft total were used with five aircraft from each aircraft class. Figure \ref{fig:diffStructuresAP} shows the results of the optimization problem run using the SCIP solver.
+\begin{figure}[H]
+    \centering
+    \includegraphics{Thesis/Method_II/diffStructuresAP.eps}
+    \caption{Different Structures Example (with Random Priority)}
+    \label{fig:diffStructuresAP}
+\end{figure}
+The solution showed that the aircraft with the longest range were assigned to the interest locations with high priority and farther locations (AC4-000) and the shorter range aircraft were assigned to loiter over the closer distances. \par 
+The assignment problem formulations successfully leveraged the methodology to quickly find a maximum loiter time over any interest location using the flight characteristics of each aircraft and in turn solve an assignment problem that maximized the interest location preferences. The solution to the priority assignment formulations were non-trivial and partitioned priority with loiter time and aircraft abilities.
 
 \section{Decision Dependent Formulation}
+\label{section:DDF}
+This sub-problem seeks to route an aircraft with the given flight characteristics to multiple locations while incorporating the fuel efficiency of the nonlinear Br\'eguet range equation. The aircraft must always start from a given source node and may visit any connected node, given that the move is feasible according to its flight characteristics. The following set of parameters, decision variables, sets, and constraints define the backbone of the mixed integer non-linear program (MINLP).
+\subsection*{Parameters}
+\begin{itemize}
+    \item $m$ is the number of locations available to travel
+    \item $D$ is a matrix of the distances between each point $D\in \mathbf{R}^{m\text{x}m}$
+    \item $E$ is a matrix of efficiency factors calculated using Br\'eguet's range equation such that $E_{ij} = \exp\left[\dfrac{-D_{ij}}{V}\dfrac{TSFC}{C_L/C_D}\right]$ and $E\in \mathbf{R}^{m\text{x}m}$
+    \item $s$ is the source and sink of the model
+\end{itemize}
+\subsection*{Decision Variables}
+\begin{itemize}
+    \item $x_{ij}^{\tau}$ is the decision to travel from location $i$ to location $j$ at time decision step $\tau$
+    \item $F^{\tau}$ is the amount of fuel used at decision step $\tau$
+\end{itemize}
+\subsection*{Sets}
+\begin{itemize}
+    \item $T = \{1,2,...,m\}$
+    \item $I = \{1,2,...,m\}$
+    \item $J = \{1,2,...,m\}$
+\end{itemize}
+\subsection*{Constraints}
+%$\max \hspace{0.5cm} \sum \text{Endurance Utility (ie logistic curve of: $\sum(f_{ij}-R_{ij}$))}$
 \begin{align}
-\max \hspace{0.5cm} &\sum \text{Endurance Utility (ie logistic curve of: $\sum(f_{ij}-R_{ij}$))}\\
-&\sum_{j:(s,j)\in A} x_{sj}^{\tau} = \begin{cases}
+&\sum_{j\in J} x_{sj}^{\tau} = \begin{cases} 
+1 & \tau = 1\\
+0 & \forall\tau\in T-\{1\} \end{cases} \label{cons:comefromsource}\\
+&\sum_{j\in J} x_{ij}^{\tau+1}-\sum_{j\in J}x^{\tau}_{ji} = 0 \hspace{0.5cm} \forall i\in N-\{s\},\tau \in T \label{cons:outtoin}\\
+&\sum_{i\in I}x_{ii}^{\tau} = 0, \hspace{0.5cm} \forall \tau \in T \label{cons:self}\\
+&\sum_{i\in I}\sum_{\tau\in T} x_{ij}^\tau\leq 1, \hspace{0.5cm} \forall j \in J\label{cons:do not revisit}\\
+&\sum_{\tau\in T}\sum_{i\in I} x_{is}^\tau = 1\label{cons:return}\\
+&W_F-\left(\sum_{i\in I}\sum_{j\in J}E_{ij}x_{ij}^1W_F - W_D\right) \leq F^{1} \label{cons:fuelstart}\\
+&W_F\sum_{i\in I}\sum_{j\in J}x_{ij}-\left(\sum_{i\in I}\sum_{j\in J}E_{ij}x_{ij}^{\tau}(W_F-\sum_{k = 1}^{\tau}F^{k-1}) - W_D\right) \leq F^{\tau}, \hspace{.5cm} \forall \tau \in T-\{1\}\label{cons:fuelnext}\\
+&\sum_{\tau\in T}\sum_{i\in I}\sum_{j\in J} F^{\tau} \leq F_{total}\label{cons:fueltotal}\\
+&x_{ij}^{\tau}\in \{0,1\}, \hspace{0.5cm} \forall i\in I,j\in J,\tau\in T\label{cons:binary}.
+\end{align}
+The constraint \eqref{cons:comefromsource} accounts for the aircraft originating from the source node at the first decision step. The constraint \eqref{cons:outtoin} only allows the aircraft to travel from the node that it traveled to in the last decision step for all nodes except the source node since the return decision step is not known. The constraint \eqref{cons:self} does not allow the aircraft to travel to the same node at any decision step while the constraint \eqref{cons:do not revisit} assures that .  The constraint \eqref{cons:return} accounts for one and only one return to the source. The constraints \eqref{cons:fuelstart} and \eqref{cons:fuelnext} incorporate the fuel burn at the start of the maneuver and for each decision step until returning to the source. Decision variable, $F^{\tau}$, is the fuel needed for the range and the additional fuel used for loiter. The variable is constrained by the aircraft's fuel burn from previous steps and needed fuel for the range given its current weight. The constraint \eqref{cons:fueltotal} ensures that the aircraft expends only the amount of fuel in its tank. Lastly, constraint \eqref{cons:binary} restricts the model to a binary decision on whether or not to travel. The non-linearity of the constraints differs from the typical MILP in that the solution is not guaranteed to be globally optimal.\par
+The objective of the decision dependent formulation is fluid in that it depends on the importance of visiting a number interest locations versus the loiter time over each interest location. Either can be constrained in an $\varepsilon$-constrained formulation to require a certain number of visited locations or a certain amount of loiter time. The former is the simplest constraint to implement where the sum total of all dimensions of $x$ is greater than or equal to the number of locations. The latter is a harder constraint to capture in a linear form without estimating fuel burn for a certain loiter time without accounting for change in weight. A non-linear formulation would be the most appropriate constraint for a small model to be realistic, but a similar result can be obtained by constraining the minimum amount of loiter time spent at a certain location. In the below formulation, the minimum amount of fuel used for loiter time is specified by $f_{min}$.
+
+\begin{align}
+\max \hspace{0.5cm} & \sum_{\tau\in T}\sum_{i\in I}\sum_{j\in J}x_{ij}^\tau\\
+\text{s.t.}\hspace{0.5cm}&\sum_{j\in J} x_{sj}^{\tau} = \begin{cases} 
 1 & \tau = 1\\
 0 & \forall\tau\in T-\{1\} \end{cases} \\
-&\sum_{j:(i,j)\in A} x_{ij}^{\tau+1}-\sum_{j:(j,i)\in A}^{\tau} = 0 \hspace{0.5cm} \forall i\in N-\{s\},\tau \in T\\
-&\sum_{i:(i,s)\in A}\sum_{\tau\in T} x_{is}^\tau = 1\\
-&F^1\leq F\\
-&F^\tau \leq F^{\tau-1}-\sum_{\forall(i,j)\in A} f_{ij} x_{ij}^{\tau-1}\\
-&R_{ij}\leq f_{ij}\\
-&F^\tau \leq F \hspace{0.5cm} \forall \tau \in T-\{1\}\\
-&F^\tau -\sum_{\forall (i,j)\in A} f_{ij}x_{ij}\geq 0 \hspace{0.5cm} \forall \tau \in T
+&\sum_{j\in J} x_{ij}^{\tau+1}-\sum_{j\in J}x^{\tau}_{ji} = 0 \hspace{0.5cm} \forall i\in N-\{s\},\tau \in T \\
+&\sum_{i\in I}x_{ii}^{\tau} = 0, \hspace{0.5cm} \forall \tau \in T \\
+&\sum_{i\in I}\sum_{\tau\in T} x_{ij}^\tau\leq 1, \hspace{0.5cm} \forall j \in J\\
+&\sum_{\tau\in T}\sum_{i\in I} x_{is}^\tau = 1\\
+&W_F-\left(\sum_{i\in I}\sum_{j\in J}E_{ij}x_{ij}^1W_F - W_D\right) - F^{1}\leq -f_{min} \\
+&W_F\sum_{i\in I}\sum_{j\in J}x_{ij}-\left(\sum_{i\in I}\sum_{j\in J}E_{ij}x_{ij}^{\tau}(W_F-\sum_{k = 1}^{\tau}F^{k-1}) - W_D\right) - F^{\tau}\leq \nonumber\\
+&\hspace{5cm}-f_{min}*\sum_{i\in I}\sum_{j\in J}x_{ij}^\tau, \hspace{.5cm} \forall \tau \in T-\{1\}\\
+&\sum_{\tau\in T}\sum_{i\in I}\sum_{j\in J} F^{\tau} \leq F_{total}\\
+&x_{ij}^{\tau}\in \{0,1\}, \hspace{0.5cm} \forall i\in I,j\in J,\tau\in T.
 \end{align}
+Though the constraints are non-linear, the solution is a realistic picture of where an aircraft should travel, given that a cruise at a lighter weight will result in a lower fuel burn than at a heavier weight. \par
+The formulation of this optimization problem is tested on an arbitrary problem of five cities in the state of Ohio, Cleveland, Cincinnati, Columbus, Youngstown, and Akron. The starting node is arbitrarily chosen as Dayton, Ohio. The aircraft used in the model is the AC4-000 due to its fuel capacity. There is no combat or climb fuel used in the model to simplify the results, but the inclusion of these would be a change to the lower bound on constraint \eqref{cons:fuelstart} and constraint \eqref{cons:fuelnext}. Additionally, the aircraft does not drop its external fuel tanks or payload for model simplicity as it did in previous models.\par
+The number of combinations available for values of $x$ becomes intractable as the number of locations increase. The five cities available to visit with a differing $f_{min}$ creates interesting results. Specifically, the route the aircraft takes follows paths that depend on how much fuel the aircraft burns at each location. Starting with a $f_{min}$ set at $1000$lbs and maximizing the number of locations visited, the path follows that the aircraft went from Dayton to Cincinnati to Columbus to Akron to Cleveland to Youngstown and returned to Dayton. The results are shown in Figure \ref{fig:fmin1000}.
+\begin{figure}[H]
+    \centering
+    \includegraphics{Thesis/Method_II/fmin1000.eps}
+    \caption{This is ugly. Fix}
+    \label{fig:fmin1000}
+\end{figure}
+There are several equivalent optimal solutions as the summation of every $F^\tau$ is less than the total fuel available in the aircraft. The addition of a summation over the total fuel consumption while weighting the optimization function to also consider the number of locations visited at each time step will further incentivize the model to seek the most fuel efficient route while loitering for at least 1000 lbs of fuel which is equivalent to loitering for at least ten minutes (varying slightly due to initial weight at each location).\par
+Constraining the model further to allow for at least 2200 lbs of fuel burn at each visited location gives another result where not all cities are able to be visited. The path follows that the aircraft went from Dayton to Cincinnati to Columbus to Youngstown to Akron and returning to Dayton. The results are shown in Figure \ref{fig:fmin2200}.
+\begin{figure}[H]
+    \centering
+    \includegraphics{Thesis/Method_II/fmin2200.eps}
+    \caption{Also ugly. Not final}
+    \label{fig:fmin2200}
+\end{figure}
+The formulation requires a fuel burn of 2200 lbs at each location which is equivalent to at least 25 minutes of loiter time at each location. The path follows a circular pattern that looks similar to a traveling salesman problem while excluding the Cleveland. While Cleveland is closer to the starting location, Youngstown is closer to other interest locations and so the optimization chose a path to Youngstown.\par
+Lastly, constraining the model by 3000 lbs of fuel burn at each location demands a loiter time of at least 35 minutes. The results are shown in \ref{fig:fmin3000}
+\begin{figure}[H]
+    \centering
+    \includegraphics{Thesis/Method_II/fmin3000.eps}
+    \caption{Real ugly}
+    \label{fig:fmin3000}
+\end{figure}
+The path shows a more fuel efficient technique where the aircraft's path burns more fuel on its second decision and travels to Cleveland after traveling to Cincinnati in the first decision step. The path is conservative in its third and fourth decision step, traveling to Columbus and then returning to Dayton. Traveling to Akron and Youngstown is considered infeasible with the required loiter time. There are multiple optimal solutions in this scenario as there is still fuel available. Using a weighted optimization technique with an $f_{min}$ at $3000$ lbs to find the most fuel efficient route while visiting the most locations, the objective function becomes
+\begin{equation}
+    \max \hspace{.5cm} w_1\sum_{\tau\in T}\sum_{i\in I}\sum_{j\in J}x_{ij}^\tau-w_2\sum_{\tau\in T}F^\tau
+\end{equation}
+where $w_1$ and $w_2$ are arbitrary weights to scale the fuel with the binary location variable. In this example case, $w_1,w_2$ were set to 5000 and 1, respectively. The results are shown in Figure \ref{fig:weightedObj}.
+\begin{figure}[H]
+    \centering
+    \includegraphics{Thesis/Method_II/fmin3000_negF.eps}
+    \caption{FixToo}
+    \label{fig:weightedObj}
+\end{figure}
+The example shows a path from Dayton to Cleveland to Akron to Youngstown. The path chooses a cluster of the closest cities in optimizing the fuel efficiency coupled with visiting the same number of cities as in the previous scenario. Interestingly, the aircraft does not visit Columbus at the end of its path, most likely due to the efficiency of being lighter and cruising farther in the last decision step.\par
+The use of this technique will largely depend on the objective function and what is desired from the MINLP model and the linear program developed in the previous subsection. The incorporation of aircraft characteristics and parameters allows for a more realistic picture of what path an aircraft could take while meeting certain requirements than previous work. 
+
+
