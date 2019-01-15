@@ -51,72 +51,30 @@ where $n$ is the number of points generated for an aircraft and $D_{avg}$ is rep
 \end{tabular}%
 }
 \end{table}
-These statistics showed minimal differences between the NASIC model's points and the tradeoff frontier's generated solution in the first five aircraft. There is a larger deviation in the second aircraft, but the trend of the data is the same as the trend-line from the tradeoff frontier. The following figures show the six aircraft's tradeoff frontiers mapped with the observed data points from NASIC's model.
-\begin{figure}%
+These statistics showed minimal differences between the NASIC model's points and the tradeoff frontier's generated solution in the first five aircraft. There is a larger deviation in the second aircraft, but the trend of the data is the same as the trend-line from the tradeoff frontier. The following figure shows the F-15C's tradeoff frontiers mapped with the observed data points from NASIC's model. The mapped tradeoff frontiers for the remaining five aircraft are referenced in Appendix \ref{app:tradeoffComps}.
+\begin{figure}[H]
     \centering
-    \subfloat[Comparison at 30,000 ft]{{\includegraphics[width=5cm]{Thesis/Analysis/Tradeoff_Pics/30000f15.eps} }}%
+    \subfloat[Comparison at 30,000 ft]{{\includegraphics[width=7cm]{Thesis/Analysis/Tradeoff_Pics/30000f15.eps} }}%
     \qquad
-    \subfloat[Comparison at 20,000 ft]{{\includegraphics[width=5cm]{Thesis/Analysis/Tradeoff_Pics/20000f15.eps} }}%
+    \subfloat[Comparison at 20,000 ft]{{\includegraphics[width=7cm]{Thesis/Analysis/Tradeoff_Pics/20000f15.eps} }}%
     \qquad
-    \subfloat[Comparison at 10,000 ft]{{\includegraphics[width = 5cm]{Thesis/Analysis/Tradeoff_Pics/10000f15.eps} }}
+    \subfloat[Comparison at 10,000 ft]{{\includegraphics[width = 7cm]{Thesis/Analysis/Tradeoff_Pics/10000f15.eps} }}
     \caption{Tradeoff Comparison for F-15C}%
     \label{fig:tradef15}
 \end{figure}
 
-\begin{figure}%
-    \centering
-    \subfloat[Comparison at 30,000 ft]{{\includegraphics[width=5cm]{Thesis/Analysis/Tradeoff_Pics/30000f16.eps} }}%
-    \qquad
-    \subfloat[Comparison at 20,000 ft]{{\includegraphics[width=5cm]{Thesis/Analysis/Tradeoff_Pics/20000f16.eps} }}%
-    \qquad
-    \subfloat[Comparison at 10,000 ft]{{\includegraphics[width = 5cm]{Thesis/Analysis/Tradeoff_Pics/10000f16.eps} }}
-    \caption{Tradeoff Comparison for F-16C}%
-    \label{fig:tradef16}
-\end{figure}
 
-\begin{figure}%
-    \centering
-    \subfloat[Comparison at 30,000 ft]{{\includegraphics[width=7cm]{Thesis/Analysis/Tradeoff_Pics/30000c1.eps} }}%
-    \qquad
-    \subfloat[Comparison at 20,000 ft]{{\includegraphics[width=7cm]{Thesis/Analysis/Tradeoff_Pics/20000c1.eps} }}%
-    \qquad
-    \subfloat[Comparison at 10,000 ft]{{\includegraphics[width = 7cm]{Thesis/Analysis/Tradeoff_Pics/10000c1.eps} }}
-    \caption{Tradeoff Comparison for AC1-000}%
-    \label{fig:tradec1}
-\end{figure}
-
-\begin{figure}%
-    \centering
-    \subfloat[Comparison at 30,000 ft]{{\includegraphics[width=7cm]{Thesis/Analysis/Tradeoff_Pics/30000c2.eps} }}%
-    \qquad
-    \subfloat[Comparison at 20,000 ft]{{\includegraphics[width=7cm]{Thesis/Analysis/Tradeoff_Pics/20000c2.eps} }}%
-    \qquad
-    \subfloat[Comparison at 10,000 ft]{{\includegraphics[width = 7cm]{Thesis/Analysis/Tradeoff_Pics/10000c2.eps} }}
-    \caption{Tradeoff Comparison for AC2-000}%
-    \label{fig:tradec2}
-\end{figure}
-
-\begin{figure}%
-    \centering
-    \subfloat[Comparison at 30,000 ft]{{\includegraphics[width=7cm]{Thesis/Analysis/Tradeoff_Pics/30000c3.eps} }}%
-    \qquad
-    \subfloat[Comparison at 20,000 ft]{{\includegraphics[width=7cm]{Thesis/Analysis/Tradeoff_Pics/20000c3.eps} }}%
-    \qquad
-    \subfloat[Comparison at 10,000 ft]{{\includegraphics[width = 7cm]{Thesis/Analysis/Tradeoff_Pics/10000c3.eps} }}
-    \caption{Tradeoff Comparison for AC3-000}%
-    \label{fig:tradec3}
-\end{figure}
-
-\begin{figure}%
-    \centering
-    \subfloat[Comparison at 30,000 ft]{{\includegraphics[width=7cm]{Thesis/Analysis/Tradeoff_Pics/30000c4.eps} }}%
-    \qquad
-    \subfloat[Comparison at 20,000 ft]{{\includegraphics[width=7cm]{Thesis/Analysis/Tradeoff_Pics/20000c4.eps} }}%
-    \qquad
-    \subfloat[Comparison at 10,000 ft]{{\includegraphics[width = 7cm]{Thesis/Analysis/Tradeoff_Pics/10000c4.eps} }}
-    \caption{Tradeoff Comparison for AC4-000}%
-    \label{fig:tradec4}
-\end{figure}
 Overall, the tradeoff comparison relayed results on the same order of magnitude as the observed data points from NASIC's model. The maximum minutes that the model deviated from the observed points for the first two aircraft (for which the most test points were acquired) was by approximately ten minutes. This showed that the tradeoff frontier was consistent with results from the NASIC model and can sufficiently estimate the results at a high speed.\par
-The final comparison of the four different configurations of ACX-000 displayed the main weakness in the analysis. Averaging the coefficient of lift over drag, thrust-specific fuel consumption, and speed of an airframe over the course of an aircraft's weight will effect the results when the difference between an outbound aircraft with a payload and external fuel tanks and the same inbound aircraft is large. The breakdown appears to happen in the comparison of AC4-000 where the aircraft is loaded with a large amount of external fuel. As a result, the estimation of the tradeoff frontier is conservative with the loiter time below the observed points by about twenty minutes on average. \par
-With the tradeoff comparison similar to the results of the NASIC model, a loiter time comparison can be determined in seconds with the methodogy. AC1-000
+The final comparison of the four different configurations of ACX-000 displayed the main weakness in the analysis. Averaging the coefficient of lift over drag, thrust-specific fuel consumption, and speed of an airframe over the course of an aircraft's weight will effect the results when the difference between an outbound aircraft with a payload and external fuel tanks and the same inbound aircraft is large. The breakdown occurs in the comparison of AC4-000 where the aircraft is loaded with a large amount of external fuel. As a result, the estimation of the tradeoff frontier is conservative with the loiter time below the observed points by about twenty minutes on average. The comparison of the observed and expected data from the AC4-000 is large with respect to raw data and the assumption inhibits accurate results when the weight difference is high between an ingress and egress aircraft. \par
+With the tradeoff comparison similar to the results of the NASIC model, a loiter time comparison can be determined in seconds with the developed methodology. The tradeoff comparison between loiter time and altitude can also be computed using the adjusted $TSFC_{alt}$ as the changing parameter and setting range to a common mileage. Figure \ref{fig:LoiterAltvsTime} shows an example instance of the tradeoff of loiter time at different altitudes and setting the range to 293 miles.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 10cm]{Thesis/Analysis/LoiterEnduranceTradeoff.eps}
+    \caption{Tradeoff of Loiter Time and Loiter Altitude}
+    \label{fig:LoiterAltvsTime}
+\end{figure}
+Since the model was shown to be accurate for 5/6 instances, this estimation can give a user an accurately estimated picture of what a loiter at different altitudes would look like at a given range and given performance characteristics.  
+
+
+
+
