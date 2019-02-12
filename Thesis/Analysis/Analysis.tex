@@ -1,5 +1,5 @@
 \section{Introduction}
-The original model from NASIC calculates a single endurance or range of an aircraft depending on inputs from a user. This method is deemed $\pm 5\%$ accurate based on comparing the output to explicit mission runs from a production program. With the tradeoff frontier of the developed methodology, a series of these outputs can be estimated with given flight parameters of the aircraft. To show the differences between the estimated frontier and the original model, several data points were extracted for three different aircraft, with the last aircraft having four differing configurations depending on external fuel and payload. This resulted in six tests for the developed methodology.\par
+The original model from NASIC calculates a single endurance or range of an aircraft depending on inputs from a user. This method is deemed $\pm 5\%$ accurate based on comparing the output to explicit mission runs from a production program. With the tradeoff frontier of the developed methodology, a series of these outputs are estimated with given flight parameters of the aircraft. To show the differences between the estimated frontier and the original model, several data points were extracted for three different aircraft, with the last aircraft having four differing configurations depending on external fuel and payload. This resulted in six tests for the developed methodology.\par
 \section{Analysis Aircraft Parameters}
 From an individual output from the original model, the parameters of the aircraft are derived based on the averages at specific altitudes and weights as discussed in Section \ref{section:modelUsage}. The following table describes all the parameters for each of the six aircraft used.
 \begin{table}[H]
@@ -18,10 +18,10 @@ From an individual output from the original model, the parameters of the aircraf
 \textbf{Climb Fuel}          & 523            & 177            & 208              & 204              & 215              & 247              \\ \hline
 \textbf{Percent Reserve}     & 5              & 5              & 5                & 5                & 5                & 5                \\ \hline
 \textbf{Minutes Reserve}     & 20             & 20             & 20               & 20               & 20               & 20               \\ \hline
-\textbf{Egress Dry Weight}   & 31262          & 20305          & 18188            & 19797            & 20062            & 19500            \\ \hline
-\textbf{Egress Full Weight}  & 44710          & 27470          & 25155            & 26764            & 29211            & 35616            \\ \hline
-\textbf{Ingress Dry Weight}  & 30645          & 20107          & 17879            & 17879            & 17890            & 17748            \\ \hline
-\textbf{Ingress Full Weight} & 44093          & 27272          & 24846            & 24846            & 24857            & 24715            \\ \hline
+\textbf{Ingress Dry Weight}   & 31262          & 20305          & 18188            & 19797            & 20062            & 19500            \\ \hline
+\textbf{Ingress Full Weight}  & 44710          & 27470          & 25155            & 26764            & 29211            & 35616            \\ \hline
+\textbf{Egress Dry Weight}  & 30645          & 20107          & 17879            & 17879            & 17890            & 17748            \\ \hline
+\textbf{Egress Full Weight} & 44093          & 27272          & 24846            & 24846            & 24857            & 24715            \\ \hline
 \textbf{Cruise Altitude}     & 30000          & 30000          & 30000            & 30000            & 30000            & 30000            \\ \hline
 \textbf{Loiter Altitude}     & 30000          & 30000          & 30000            & 30000            & 30000            & 30000            \\ \hline
 \end{tabular}
@@ -30,7 +30,7 @@ From an individual output from the original model, the parameters of the aircraf
 The cruise and loiter altitude describe the altitude at which these parameters were derived. These are then estimated for different altitudes using US Standard Atmosphere. The ACX-000 aircraft is a dataset for which the aircraft is unknown to test whether the method is agnostic to a particular aircraft.
 
 \section{Aircraft Tradeoff Comparison}
-The tradeoff frontier was compared to the NASIC model using point statistics. Between three and eight points were generated from the NASIC model depending on data availability of the aircraft. These points were generated at ten, twenty, and thirty minutes of endurance for all aircraft, but if an aircraft was able to endure longer, the points at 40, 60, 80, and 100 minutes of endurance may have also been generated. The difference statistics were computed as the average of the absolute value of the difference between the tradeoff frontier, $E$, and the NASIC model, $O$.
+The tradeoff frontier was compared to the NASIC model using point statistics. Between three and eight points were generated from the NASIC model depending on data availability of the aircraft. These points were generated at ten, twenty, and thirty minutes of loiter time for all aircraft. If an aircraft was able to loiter longer, then 40, 60, 80, and 100 minutes of loiter time were also been generated. The statistics were computed as the average of the absolute value of the difference between the tradeoff frontier, $E$, and the NASIC model, $O$.
 \begin{equation}
     D_{avg} = \dfrac{\sum_{i = 1}^n |O_i-E_i|}{n}
 \end{equation}
@@ -51,7 +51,7 @@ where $n$ is the number of points generated for an aircraft and $D_{avg}$ is rep
 \end{tabular}%
 }
 \end{table}
-These statistics showed minimal differences between the NASIC model's points and the tradeoff frontier's generated solution in the first five aircraft. There is a larger deviation in the second aircraft, but the trend of the data is the same as the trend-line from the tradeoff frontier. The following figure shows the F-15C's tradeoff frontiers mapped with the observed data points from NASIC's model. The mapped tradeoff frontiers for the remaining five aircraft are referenced in Appendix \ref{app:tradeoffComps}.
+These statistics showed minimal differences between the NASIC model's points and the tradeoff frontier's generated solution in the first five aircraft. There is a larger deviation in the second aircraft, but the trend of the data is the same as the trend-line from the tradeoff frontier. Figure \ref{fig:tradef15} shows the F-15C's tradeoff frontiers mapped with the observed data points from NASIC's model. The mapped tradeoff frontiers for the remaining five aircraft are referenced in Appendix \ref{app:tradeoffComps}.
 \begin{figure}[H]
     \centering
     \subfloat[Comparison at 30,000 ft]{{\includegraphics[width=7cm]{Thesis/Analysis/Tradeoff_Pics/30000f15.eps} }}%
@@ -64,16 +64,16 @@ These statistics showed minimal differences between the NASIC model's points and
 \end{figure}
 
 
-Overall, the tradeoff comparison relayed results on the same order of magnitude as the observed data points from NASIC's model. The maximum minutes that the model deviated from the observed points for the first two aircraft (for which the most test points were acquired) was by approximately ten minutes. This showed that the tradeoff frontier was consistent with results from the NASIC model and can sufficiently estimate the results at a high speed.\par
-The final comparison of the four different configurations of ACX-000 displayed the main weakness in the analysis. Averaging the coefficient of lift over drag, thrust-specific fuel consumption, and speed of an airframe over the course of an aircraft's weight will effect the results when the difference between an outbound aircraft with a payload and external fuel tanks and the same inbound aircraft is large. The breakdown occurs in the comparison of AC4-000 where the aircraft is loaded with a large amount of external fuel. As a result, the estimation of the tradeoff frontier is conservative with the loiter time below the observed points by about twenty minutes on average. The comparison of the observed and expected data from the AC4-000 is large with respect to raw data and the assumption inhibits accurate results when the weight difference is high between an ingress and egress aircraft. \par
-With the tradeoff comparison similar to the results of the NASIC model, a loiter time comparison can be determined in seconds with the developed methodology. The tradeoff comparison between loiter time and altitude can also be computed using the adjusted $TSFC_{alt}$ as the changing parameter and setting range to a common mileage. Figure \ref{fig:LoiterAltvsTime} shows an example instance of the tradeoff of loiter time at different altitudes and setting the range to 293 miles.
+Overall, the tradeoff comparison relayed results on the same order of magnitude as the observed data points from NASIC's model. The maximum minutes that the model deviated from the observed points for the first two aircraft (for which the most test points were acquired) was approximately ten minutes. This showed that the proposed method was consistent with results from the NASIC model while producing the answers more quickly.\par
+The final comparison of the four different configurations of ACX-000 displayed the main weakness in the analysis. Averaging the coefficient of lift over drag, thrust-specific fuel consumption, and speed of an airframe over the course of an aircraft's weight will effect the results when the difference between an outbound aircraft with a payload and external fuel tanks and the same inbound aircraft is large. The breakdown occurs in the comparison of AC4-000 where the aircraft is loaded with a large amount of external fuel. As a result, the proposed method is conservative with the loiter time estimated lower than the observed points by about twenty minutes on average. The difference between the observed and expected data from the AC4-000 is large with respect to raw data and the assumption inhibits accurate results when the weight difference is high between an ingress and egress aircraft. \par
+With the tradeoff comparison similar to the results of the NASIC model, a loiter time comparison is determined in seconds with the developed methodology. The tradeoff comparison between loiter time and altitude can also be computed using the adjusted $TSFC_{alt}$ as the changing parameter and setting range to a common mileage. Figure \ref{fig:LoiterAltvsTime} shows an example instance of the tradeoff of loiter time at different altitudes and setting the range to 293 miles.
 \begin{figure}[H]
     \centering
     \includegraphics[width = 10cm]{Thesis/Analysis/LoiterEnduranceTradeoff.eps}
     \caption{Tradeoff of Loiter Time and Loiter Altitude}
     \label{fig:LoiterAltvsTime}
 \end{figure}
-Since the model was shown to be accurate for 5/6 instances, this estimation can give a user an accurately estimated picture of what a loiter at different altitudes would look like at a given range and given performance characteristics.  
+Since the model was shown accurate for five of six instances, this estimation can give a user an accurately estimated picture of what a loiter at different altitudes would look like at a given range and given performance characteristics.  
 
 
 
